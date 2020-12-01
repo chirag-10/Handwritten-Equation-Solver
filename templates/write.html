@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <div id="operation" class="draw" style="width:100%">
+        </div>
+        <button id="clear" type="button">Clear</button><br>
+        <button type="button" onclick="predict()">Predict</button>
+    <div style="margin-top: 50px; text-align: center;">
+      <div>
+        Operation:
+        <div id=operation-container></div>
+      </div>
+
+      <div style="margin-top: 25px">
+        Solution:
+        <div id=solution-container></div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='javascript/main.js') }}">
+         $('#write').addclass('active');
+         $('#file').removeclass('active');
+    </script>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+#root, html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            outline: none;
+            box-sizing: border-box;
+        }
+html,body{
+background-image:url('/static/img/bg.jpg');
+}
+
+#container {
+    margin-top: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.draw {
+    border: 1px solid #000;
+    margin-right: 5px;
+}
+
+h1{
+    font-size:100px;
+}
+
+ul {
+    padding-bottom:0px;
+    border-bottom : 0px;
+}
