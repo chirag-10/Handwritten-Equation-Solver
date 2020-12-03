@@ -18,6 +18,8 @@ from os.path import isfile, join
 from keras import backend as K
 from os import listdir
 from IPython.display import Image
+from io import BytesIO
+import base64
 
 app = Flask(__name__,static_folder="static")
 
@@ -150,32 +152,6 @@ class ConvolutionalNeuralNetwork:
 
             return operation            
 
-
-camera = cv2.VideoCapture(0)
-
-def gen_frames():
-    while True:
-        success, frame = camera.read()
-        if not success:
-            break
-        else:
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            yield(b'--frame\r\n'
-                  b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-    camera.release()
-    del (camera)
-    cv2.destroyAllWindows()
-
-def gen_pic():
-    camera1 = cv2.VideoCapture(0)
-    time.sleep(0.2)
-    return_value, image = camera1.read()
-    cv2.imwrite("uploads/opencv.png", image)
-
-    del (camera1)
-
-
 def validate_image(stream):
     header = stream.read(512)
     stream.seek(0)
@@ -230,23 +206,6 @@ def upload_files():
         uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
     return redirect('/file')
 
-# @app.route('/file')
-# def file():
-#     files = os.listdir(app.config['UPLOAD_PATH'])
-#     return render_template('file.html',files=files)
-
-# @app.route('/uploads/<filename>')
-# def upload(filename):
-#     return send_from_directory(app.config['UPLOAD_PATH'], filename)
-
-@app.route('/video_feed')
-def video_feed():
-    return Response(gen_frames(),mimetype='multipart/x-mixed-replace;boundary=frame')
-
-@app.route('/pic')
-def capture_pic():
-    return Response(gen_pic(),mimetype='multipart/x-mixed-replace;boundary=frame')
-
 @app.route('/write')
 def write():
     return render_template('write.html')
@@ -281,6 +240,26 @@ def upload1():
     result=eval(operation)
     print(result)
     return render_template("file.html", value =[operation, result])
+
+@app.route('/predictWrite', methods=['POST'])
+def predict():
+    target = os.path.join(APP_ROOT, 'images/')
+    operation = request.form['operation']
+    imgdata = base64.b64decode(operation)
+    filename = target + 'image.jpg'  # I assume you have a way of picking unique filenames
+    with open(filename, 'wb') as f:
+        f.write(imgdata)
+    CNN = ConvolutionalNeuralNetwork()
+    operation = CNN.predict(filename)
+    print(operation)
+    res = eval(operation)
+    print(res)
+    
+    return json.dumps({
+        'operation': operation,
+        'solution': res
+    })
+
 
 if __name__ == "__main__":
     app.run(host="localhost",port="3000",debug=True)
