@@ -6,38 +6,13 @@
           <p><input type="file" name="file" required="true" placeholder="Upload the Image to Predict"></p>
           <p><input type="submit" value="Predict" onclick="predict()"></p>
         </form>
-        <hr>
-        {% for file in files %}
-            <img src="{{ url_for('upload', filename=file) }}" style="width: 100px">
-        {% endfor %}
     </div>
-    <div> Operation :
+    <div> Operation : {{value[0]}}
     <div id="operation-container"></div>
     </div>
 
     </div>
-    <div> Solution :
+    <div> Solution : {{value[1]}}
     <div id="solution-container"></div>
     </div>
-
-    <script type="text/javascript" src="{{ url_for('static', filename='javascript/main.js') }}">
-    function predict(){
-    $.ajax({
-          url: '/predict',
-          type:'POST',
-          data,
-        }).done(function(data) {
-            let result = JSON.parse(data);
-            console.log(result)
-            $('#operation-container').html(result.operation);
-            $('#solution-container').html(result.solution);
-        }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
-            console.log(XMLHttpRequest);
-            alert("error");
-        })
-     }
-
-     $('#file').addclass("active");
-     $('#write').removeclass('active');
-    </script>
 {% endblock %}

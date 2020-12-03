@@ -7,7 +7,7 @@ let p5Obj;
                 p.background(255);
             }
         }
-
+        
         p.draw = () => {}
 
         p.mouseDragged = () => {
