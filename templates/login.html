@@ -21,20 +21,27 @@
 	<div class="d-flex justify-content-center h-100">
 		<div class="card">
 			<div class="card-header">
-				<h3>Sign In</h3>
+				<h3>Login In</h3>
 				<div class="d-flex justify-content-end social_icon">
 					<span><i class="fab fa-facebook-square"></i></span>
 					<span><i class="fab fa-google"></i></span>
 					<span><i class="fab fa-twitter-square"></i></span>
 				</div>
 			</div>
+			{% with messages = get_flashed_messages() %}
+			{% if messages %}
+			<div class="alert alert-danger">
+			{{ messages[0] }}
+			</div>
+			{% endif %}
+			{% endwith %}
 			<div class="card-body">
 				<form method="POST" action="/login">
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<input type="text" class="form-control" placeholder="username" name="username">
+						<input type="text" class="form-control" placeholder="username" name="email">
 
 					</div>
 					<div class="input-group form-group">

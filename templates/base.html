@@ -26,18 +26,27 @@
                 Equation Solver
           </h1>
         <ul class="nav nav-tabs">
+          {% if current_user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" id="file" href="/file"> Upload </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" id="write" href="/write"> Write </a>
           </li>
+          {% endif %}
+          {% if not current_user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" id="login" href="/login"> Login </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" id="register" href="/register"> Register </a>
           </li>
+          {% endif %}
+          {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" id="logout" href="/logout"> Logout </a>
+          </li>
+          {% endif %}
         </ul>
         </div>
 
